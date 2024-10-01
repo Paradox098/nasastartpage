@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nasaspaceapp</title>
+    <title>NASA Space App Challenge 2024 - Hubble Explorer</title>
     <style>
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,20,1) 100%);
+            background: radial-gradient(circle, rgba(0,0,15,1) 0%, rgba(0,0,30,1) 100%);
             color: white;
             overflow: hidden;
         }
@@ -34,8 +34,7 @@
             z-index: 2;
             width: 80%;
             max-width: 600px;
-            height: auto;
-            aspect-ratio: 1; 
+            height: 60vh;
             transition: transform 1s ease; 
         }
         .info {
@@ -59,9 +58,18 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            font-size: 3em; 
+            font-size: 2.5em; 
             color: rgba(255, 255, 255, 0.9);
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        .team-info {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
         }
         .explore-button {
             position: absolute;
@@ -74,45 +82,45 @@
             color: white;
             background-color: rgba(0, 150, 255, 0.9);
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 150, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 150, 255, 0.7);
         }
         .explore-button:hover {
-            background-color: rgba(0, 150, 255, 1);
-            
+            background-color: rgba(0, 180, 255, 1);
         }
         .explore-button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(0, 150, 255, 0.5);
+            transform: translate(-50%, 2px);
+            box-shadow: 0 2px 5px rgba(0, 150, 255, 0.7);
         }
         @media (max-width: 600px) {
             .title {
                 font-size: 2em; 
             }
+            .team-info {
+                font-size: 1em;
+            }
             .explore-button {
                 font-size: 1em; 
             }
-        }
-        model-viewer {
-            perspective: 1000px; 
         }
         @keyframes moveModel {
             0% {
                 transform: translateY(0) translateZ(0) scale(1);
             }
             50% {
-                transform: translateY(180px) translateZ(100px) scale(1.5);
+                transform: translateY(100px) translateZ(50px) scale(1.2);
             }
             100% {
                 transform: translateY(0) translateZ(0) scale(1);
             }
         }
         .model-animation {
-            animation: moveModel 3s forwards; 
+            animation: moveModel 2s forwards; 
         }
     </style>
+    <link rel="preload" href="Hubble.glb" as="fetch" crossorigin="anonymous">
 </head>
 <body>
 
@@ -124,19 +132,25 @@
             src="Hubble.glb" 
             alt="3D model of the Hubble Space Telescope" 
             auto-rotate 
-            camera-controls>
+            camera-controls
+            loading="eager"
+            reveal="auto"
+            preload
+            disable-zoom
+            camera-orbit="0deg 75deg 105%">
         </model-viewer>
 
-        <div class="title">Hubble Space Telescope</div>
+        <div class="team-info">NASA Space App Challenge 2024<br>Team: Manoj, Vivek, Lohith, Tilak, Madan, Ranganath</div>
 
         <button class="explore-button" id="exploreButton">Start Exploring</button>
         
         <div class="info" id="info">
-            Discover the wonders of the universe with the Hubble Space Telescope!
+            Discover the wonders of the universe with our Hubble Space Telescope Explorer!
         </div>
     </div>
 
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+
 
     <script>
         const canvas = document.getElementById('starfield');
@@ -151,7 +165,7 @@
         resizeCanvas();
 
         const stars = [];
-        const numStars = 300;
+        const numStars = 200;
 
         for (let i = 0; i < numStars; i++) {
             stars.push({
@@ -165,19 +179,13 @@
 
         function drawStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, 'rgba(0, 0, 20, 1)');
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             stars.forEach(star => {
                 ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2, false);
                 ctx.fill();
 
-                star.opacity += 0.01 * star.direction;
+                star.opacity += 0.005 * star.direction;
                 if (star.opacity >= 1 || star.opacity <= 0.2) {
                     star.direction *= -1;
                 }
@@ -191,14 +199,13 @@
         const modelViewer = document.getElementById('model');
 
         exploreButton.addEventListener('click', () => {
-            // Animate the model
             modelViewer.classList.add('model-animation');
-            document.getElementById('info').style.opacity = 1; // Show info on button click
+            document.getElementById('info').style.opacity = 1;
             
             // Simulate a delay for the animation to complete before redirecting
             setTimeout(() => {
-                window.location.href = "https://paradox098.github.io/nasaspaceapp/"; // Replace with your target URL
-            }, 3000); // Match with the CSS animation duration
+                window.location.href = "https://paradox098.github.io/nasaspaceapp/";
+            }, 2000); // Match with the CSS animation duration
         });
 
         modelViewer.addEventListener('load', () => {
