@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Space App Challenge 2024 - Hubble Explorer</title>
+    <title></title>
+    <link rel="manifest" href="/manifest.json">
     <style>
         body {
             margin: 0;
@@ -64,16 +65,26 @@
         }
         .team-info {
             position: absolute;
-            top: 70px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
-            font-size: 1.2em;
+            font-size: 0.8em;
             color: rgba(255, 255, 255, 0.8);
+            display: flex;
+        }
+        .nasa-logo {
+            position: absolute;
+            top: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            width: 100px;
+            height: auto;
         }
         .explore-button {
             position: absolute;
-            bottom: 100px;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 3;
@@ -160,7 +171,9 @@
             camera-orbit="0deg 75deg 105%">
         </model-viewer>
 
-        <div class="team-info">NASA Space App Challenge 2024<br>Team: Manoj, Vivek, Lohith, Tilak, Madan, Ranganath</div>
+        <img src="NASA.jpg" alt="NASA Space Apps Challenge" class="nasa-logo">
+
+        <div class="team-info"><br>Team: Manoj, Vivek, Lohith, Tilak, Madan, Ranganath</div>
 
         <button class="explore-button" id="exploreButton">Start Exploring</button>
         
