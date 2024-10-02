@@ -9,12 +9,12 @@
     "orientation": "portrait",
     "icons": [
       {
-        "src": "NASA.jpg",  
-        "type": "image/jpg",
+        "src": "space_apps_003.png",
+        "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "NASA.jpg",
+        "src": "space_apps_003.png",
         "type": "image/png",
         "sizes": "512x512"
       }
