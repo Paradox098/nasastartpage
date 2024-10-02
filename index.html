@@ -6,135 +6,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hubble Space Exploration</title>
     <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            background: radial-gradient(circle, rgba(0,0,15,1) 0%, rgba(0,0,30,1) 100%);
-            color: white;
-            overflow: hidden;
+        :root {
+            --primary-color: #00ffff;
+            --secondary-color: #0083b0;
+            --text-color: #ffffff;
+            --bg-color-start: #000428;
+            --bg-color-end: #004e92;
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color-start), var(--bg-color-end));
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
         .container {
             position: relative;
-            height: 100vh; 
+            min-height: 100vh; 
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 20px;
             text-align: center;
         }
+
         canvas {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
         }
+
         model-viewer {
-            position: relative;
+            width: 100%;
+            height: 40vh;
+            max-height: 400px;
+            margin: 20px 0;
             z-index: 2;
-            width: 80%;
-            max-width: 600px;
-            height: 60vh;
-            transition: transform 1s ease;
-        }
-        .info {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
             border-radius: 10px;
-            width: 90%;
+        }
+
+        .info {
+            background: rgba(0, 20, 40, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            width: 100%;
             max-width: 400px; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+            font-size: 0.9em;
+            line-height: 1.5;
         }
+
         .title {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em; 
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            margin-bottom: 10px;
             z-index: 3;
-            font-size: 2.5em; 
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
+
         .team-info {
-            position: absolute;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
             font-size: 0.8em;
             color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            z-index: 3;
         }
+
         .nasa-logo {
-            position: absolute;
-            top: 1px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            width: 100px;
+            width: 60px;
             height: auto;
-        }
-        .explore-button {
-            position: absolute;
-            bottom: 77px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
             z-index: 3;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            color: white;
-            background-color: rgba(0, 150, 255, 0.9);
+        }
+
+        .explore-button {
+            padding: 12px 25px;
+            font-size: 1em;
+            color: var(--text-color);
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
             border: none;
-            border-radius: 10px;
+            border-radius: 25px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 150, 255, 0.7);
-            display: none; /* Initially hidden */
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 150, 255, 0.4);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            z-index: 3;
         }
-        .explore-button:hover {
-            background-color: rgba(0, 180, 255, 1);
+
+        .explore-button:hover, .explore-button:focus {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 150, 255, 0.6);
         }
+
         .explore-button:active {
-            transform: translate(-50%, 2px);
-            box-shadow: 0 2px 5px rgba(0, 150, 255, 0.7);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 150, 255, 0.4);
         }
+
         .loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 4;
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--primary-color);
+            border-top: 3px solid var(--secondary-color);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite, glow 2s ease-in-out infinite;
+            z-index: 4;
         }
+
         @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px var(--primary-color); }
+            50% { box-shadow: 0 0 20px var(--primary-color); }
+        }
+
         @keyframes moveModel {
-            0% {
-                transform: translateY(0) translateZ(0) scale(1);
-            }
-            50% {
-                transform: translateY(100px) translateZ(50px) scale(1.2);
-            }
-            100% {
-                transform: translateY(0) translateZ(0) scale(1);
-            }
+            0% { transform: translateY(0) scale(1) rotateY(0deg); }
+            50% { transform: translateY(20px) scale(1.1) rotateY(0deg); }
+            100% { transform: translateY(0) scale(1) rotateY(360deg); }
         }
+
         .model-animation {
-            animation: moveModel 2s forwards; 
+            animation: moveModel 4s ease-in-out forwards; 
+        }
+
+        @media (min-width: 768px) {
+            .title { font-size: 2.5em; }
+            model-viewer { height: 50vh; }
+            .info { font-size: 1em; }
+            .explore-button { font-size: 1.2em; }
+        }
+
+        @media (min-width: 1024px) {
+            .title { font-size: 3em; }
+            model-viewer { height: 60vh; }
+            .container { justify-content: center; }
         }
     </style>
     <link rel="preload" href="Hubble.glb" as="fetch" crossorigin="anonymous">
@@ -144,6 +178,10 @@
     <div class="container">
         <canvas id="starfield"></canvas>
         
+        <img src="NASA.jpg" alt="NASA Space Apps Challenge" class="nasa-logo">
+
+        <h1 class="title">Hubble Space Explorer</h1>
+
         <div id="loader" class="loader"></div>
         
         <model-viewer 
@@ -159,18 +197,17 @@
             camera-orbit="0deg 75deg 105%">
         </model-viewer>
 
-        <img src="NASA.jpg" alt="NASA Space Apps Challenge" class="nasa-logo">
+        <div class="team-info">Team: QUANTUM MAKRICKS</div>
 
-        <div class="team-info">Team: Manoj, Vivek, Lohith, Tilak, Madan, Ranganath</div>
-
-        <button class="explore-button" id="exploreButton">Start Exploring</button>
+        <button class="explore-button" id="exploreButton">Explore Cosmos</button>
         
         <div class="info" id="info">
-            Discover the wonders of the universe with our Hubble Space Telescope Explorer!
+            Embark on an extraordinary journey through the cosmos with our Hubble Space Telescope Explorer. Uncover the mysteries of distant galaxies, nebulae, and the vastness of our universe!
         </div>
     </div>
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+
 
     <script>
         const canvas = document.getElementById('starfield');
@@ -185,7 +222,7 @@
         resizeCanvas();
 
         const stars = [];
-        const numStars = 200;
+        const numStars = 270;
 
         for (let i = 0; i < numStars; i++) {
             stars.push({
