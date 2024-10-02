@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Hubble Space Exploration</title>
     <link rel="manifest" href="manifest.json">
     <style>
         body {
@@ -36,7 +36,7 @@
             width: 80%;
             max-width: 600px;
             height: 60vh;
-            transition: transform 1s ease; 
+            transition: transform 1s ease;
         }
         .info {
             position: absolute;
@@ -71,7 +71,6 @@
             z-index: 3;
             font-size: 0.8em;
             color: rgba(255, 255, 255, 0.8);
-            display: flex;
         }
         .nasa-logo {
             position: absolute;
@@ -106,31 +105,6 @@
             transform: translate(-50%, 2px);
             box-shadow: 0 2px 5px rgba(0, 150, 255, 0.7);
         }
-        @media (max-width: 600px) {
-            .title {
-                font-size: 2em; 
-            }
-            .team-info {
-                font-size: 1em;
-            }
-            .explore-button {
-                font-size: 1em; 
-            }
-        }
-        @keyframes moveModel {
-            0% {
-                transform: translateY(0) translateZ(0) scale(1);
-            }
-            50% {
-                transform: translateY(100px) translateZ(50px) scale(1.2);
-            }
-            100% {
-                transform: translateY(0) translateZ(0) scale(1);
-            }
-        }
-        .model-animation {
-            animation: moveModel 2s forwards; 
-        }
         .loader {
             position: absolute;
             top: 50%;
@@ -147,6 +121,20 @@
         @keyframes spin {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes moveModel {
+            0% {
+                transform: translateY(0) translateZ(0) scale(1);
+            }
+            50% {
+                transform: translateY(100px) translateZ(50px) scale(1.2);
+            }
+            100% {
+                transform: translateY(0) translateZ(0) scale(1);
+            }
+        }
+        .model-animation {
+            animation: moveModel 2s forwards; 
         }
     </style>
     <link rel="preload" href="Hubble.glb" as="fetch" crossorigin="anonymous">
@@ -173,7 +161,7 @@
 
         <img src="NASA.jpg" alt="NASA Space Apps Challenge" class="nasa-logo">
 
-        <div class="team-info"><br>Team: Manoj, Vivek, Lohith, Tilak, Madan, Ranganath</div>
+        <div class="team-info">Team: Manoj, Vivek, Lohith, Tilak, Madan, Ranganath</div>
 
         <button class="explore-button" id="exploreButton">Start Exploring</button>
         
@@ -183,7 +171,6 @@
     </div>
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
-
 
     <script>
         const canvas = document.getElementById('starfield');
@@ -233,14 +220,44 @@
         const loader = document.getElementById('loader');
 
         exploreButton.addEventListener('click', () => {
+            // Play the 3D model animation
             modelViewer.classList.add('model-animation');
             document.getElementById('info').style.opacity = 1;
-            
-            // Simulate a delay for the animation to complete before redirecting
+
+            // Wait for animation to finish, then show video
             setTimeout(() => {
-                window.location.href = "https://paradox098.github.io/nasaspaceapp/";
+                playVideo();
             }, 2000); // Match with the CSS animation duration
         });
+
+        function playVideo() {
+            // Create the video element dynamically
+            const videoContainer = document.createElement('div');
+            videoContainer.style.position = 'absolute';
+            videoContainer.style.top = 0;
+            videoContainer.style.left = 0;
+            videoContainer.style.width = '100%';
+            videoContainer.style.height = '100%';
+            videoContainer.style.background = 'black';
+            videoContainer.style.zIndex = 5;
+
+            const video = document.createElement('video');
+            video.src = 'your-video-file.mp4'; // Replace with your actual video file
+            video.style.width = '100%';
+            video.style.height = '100%';
+            video.style.objectFit = 'cover';
+            video.autoplay = true;
+            videoContainer.appendChild(video);
+
+            document.body.appendChild(videoContainer);
+
+            video.addEventListener('ended', () => {
+                // Remove video after it finishes
+                videoContainer.remove();
+                // Redirect to the specified URL
+                window.location.href = "https://paradox098.github.io/nasaspaceapp/";
+            });
+        }
 
         modelViewer.addEventListener('load', () => {
             console.log('Model loaded successfully');
